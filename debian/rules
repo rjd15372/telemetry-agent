@@ -46,17 +46,10 @@ override_dh_auto_test override_dh_compress override_dh_fixperms override_dh_stri
 
 override_dh_auto_build:
 	@echo "RULES.$@"
-	export PATH=/usr/local/go/bin:${PATH}
-	export GOROOT="/usr/local/go/"
-	export GOPATH=${PWD}/build
-	export PATH="/usr/local/go/bin:${PATH}:${GOPATH}"
-	export GOBINPATH="/usr/local/go/bin"
-	mkdir -p build/src/github.com/percona/percona-telemetry-agent
-	find . -mindepth 1 -maxdepth 1 -not -name build -exec cp -r {} build/src/github.com/percona/percona-telemetry-agent/ \;
 ifeq ($(DEB_BUILD_ARCH),arm64)
-	cd build/src/github.com/percona/percona-telemetry-agent/ && env GOARCH=arm64 make build
+	make build GOARCH=arm64 COMPONENT_VERSION=${COMPONENT_VERSION} TELEMETRY_AGENT_RELEASE_FULLCOMMIT=${TELEMETRY_AGENT_RELEASE_FULLCOMMIT} VENDOR_BUILD_FLAGS="-mod=vendor"
 else
-	cd build/src/github.com/percona/percona-telemetry-agent/ && env GOARCH=amd64 make build
+	make build GOARCH=amd64 COMPONENT_VERSION=${COMPONENT_VERSION} TELEMETRY_AGENT_RELEASE_FULLCOMMIT=${TELEMETRY_AGENT_RELEASE_FULLCOMMIT} VENDOR_BUILD_FLAGS="-mod=vendor"
 endif
 	touch $@
 

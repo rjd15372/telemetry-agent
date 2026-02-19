@@ -8,7 +8,8 @@ Summary: Percona Telemetry Agent
 Group:  Applications/Databases
 License: GPLv3
 URL:  https://github.com/percona/telemetry-agent
-Source0: percona-telemetry-agent-%{version}.tar.gz
+Source: percona-telemetry-agent-%{version}.tar.gz
+Source1: vendor.tar.gz
 
 BuildRequires: golang make git
 BuildRequires:  systemd
@@ -25,8 +26,7 @@ Requires:  yum-utils
 Percona Telemetry Agent gathers information and metrics from Percona products installed on the host.
 
 %prep
-%setup -q -n percona-telemetry-agent-%{version}
-
+%autosetup -D -a 1
 
 %build
 GITCOMMIT=$(grep '^commit:' %{_sourcedir}/*.obsinfo | awk '{print $2}')
@@ -46,21 +46,13 @@ export VERSION
 export GITBRANCH
 export GITCOMMIT
 
-cd ../
-export PATH=/usr/local/go/bin:${PATH}
-export GOROOT="/usr/local/go/"
-export GOPATH=$(pwd)/
-export PATH="/usr/local/go/bin:$PATH:$GOPATH"
-export GOBINPATH="/usr/local/go/bin"
 %ifarch aarch64
 export GOARCH=arm64
 %else
 export GOARCH=amd64
 %endif
-mkdir -p src/github.com/percona/
-mv percona-telemetry-agent-%{version} src/github.com/percona/percona-telemetry-agent
-ln -s src/github.com/percona/percona-telemetry-agent percona-telemetry-agent-%{version}
-cd src/github.com/percona/percona-telemetry-agent && env GOARCH=${GOARCH} make build COMPONENT_VERSION=${COMPONENT_VERSION} TELEMETRY_AGENT_RELEASE_FULLCOMMIT=${TELEMETRY_AGENT_RELEASE_FULLCOMMIT}
+
+make build GOARCH=${GOARCH} COMPONENT_VERSION=${COMPONENT_VERSION} TELEMETRY_AGENT_RELEASE_FULLCOMMIT=${TELEMETRY_AGENT_RELEASE_FULLCOMMIT} VENDOR_BUILD_FLAGS="-mod=vendor"
 cd %{_builddir}
 
 %install

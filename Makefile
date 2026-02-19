@@ -11,6 +11,7 @@ GO_BUILD_LDFLAGS = -X github.com/percona/telemetry-agent/config.Version=${COMPON
 	-X github.com/percona/telemetry-agent/config.Commit=${TELEMETRY_AGENT_RELEASE_FULLCOMMIT} \
 	-extldflags -static
 GOARCH?=amd64
+VENDOR_BUILD_FLAGS?=
 
 help:                   ## Display this help message
 	@echo "Please use \`make <target>\` where <target> is one of:"
@@ -24,7 +25,7 @@ init:                   ## Install development tools
 build:                ## Compile using plain go build
 	CGO_ENABLED=0 \
 	GOARCH=${GOARCH} \
-	go build -a -ldflags="${GO_BUILD_LDFLAGS}" -o ./bin/telemetry-agent ./cmd/telemetry-agent
+	go build -a -ldflags="${GO_BUILD_LDFLAGS}" ${VENDOR_BUILD_FLAGS} -o ./bin/telemetry-agent ./cmd/telemetry-agent
 
 format:                 ## Format source code
 	go mod tidy
