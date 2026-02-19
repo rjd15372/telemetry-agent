@@ -62,6 +62,7 @@ install -Dm 755 bin/telemetry-agent %{buildroot}/%{_bindir}/percona-telemetry-ag
 install -D -m 0644 packaging/conf/percona-telemetry-agent.logrotate %{buildroot}/%{_sysconfdir}/logrotate.d/percona-telemetry-agent
 install -m 0755 -d %{buildroot}/%{_sysconfdir}/sysconfig
 install -D -m 0640 packaging/conf/percona-telemetry-agent.env %{buildroot}/%{_sysconfdir}/sysconfig/percona-telemetry-agent
+install -m 0755 -d %{buildroot}/%{_unitdir}
 install -m 0644 packaging/conf/percona-telemetry-agent.service %{buildroot}/%{_unitdir}/percona-telemetry-agent.service
 
 %pre -n percona-telemetry-agent
