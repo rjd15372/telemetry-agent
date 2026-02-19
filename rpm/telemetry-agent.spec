@@ -56,25 +56,13 @@ make build GOARCH=${GOARCH} COMPONENT_VERSION=${COMPONENT_VERSION} TELEMETRY_AGE
 cd %{_builddir}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-install -m 755 -d $RPM_BUILD_ROOT/%{_bindir}
-install -m 0775 -d $RPM_BUILD_ROOT/%{_log_dir}
-install -D -m 0660 /dev/null $RPM_BUILD_ROOT/%{_log_dir}/telemetry-agent.log
-install -D -m 0660 /dev/null  $RPM_BUILD_ROOT/%{_log_dir}/telemetry-agent-error.log
-cd ../
-export PATH=/usr/local/go/bin:${PATH}
-export GOROOT="/usr/local/go/"
-export GOPATH=$(pwd)/
-export PATH="/usr/local/go/bin:$PATH:$GOPATH"
-export GOBINPATH="/usr/local/go/bin"
-cd src/
-cp github.com/percona/percona-telemetry-agent/bin/telemetry-agent $RPM_BUILD_ROOT/%{_bindir}/percona-telemetry-agent
-install -m 0755 -d $RPM_BUILD_ROOT/%{_sysconfdir}
-install -D -m 0644 github.com/percona/percona-telemetry-agent/packaging/conf/percona-telemetry-agent.logrotate $RPM_BUILD_ROOT/%{_sysconfdir}/logrotate.d/percona-telemetry-agent
-install -m 0755 -d $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig
-install -D -m 0640 github.com/percona/percona-telemetry-agent/packaging/conf/percona-telemetry-agent.env $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/percona-telemetry-agent
-install -m 0755 -d $RPM_BUILD_ROOT/%{_unitdir}
-install -m 0644 github.com/percona/percona-telemetry-agent/packaging/conf/percona-telemetry-agent.service $RPM_BUILD_ROOT/%{_unitdir}/percona-telemetry-agent.service
+install -D -m 0660 /dev/null %{buildroot}/%{_log_dir}/telemetry-agent.log
+install -D -m 0660 /dev/null  %{buildroot}/%{_log_dir}/telemetry-agent-error.log
+install -Dm 755 bin/telemetry-agent %{buildroot}/%{_bindir}/percona-telemetry-agent
+install -D -m 0644 packaging/conf/percona-telemetry-agent.logrotate %{buildroot}/%{_sysconfdir}/logrotate.d/percona-telemetry-agent
+install -m 0755 -d %{buildroot}/%{_sysconfdir}/sysconfig
+install -D -m 0640 packaging/conf/percona-telemetry-agent.env %{buildroot}/%{_sysconfdir}/sysconfig/percona-telemetry-agent
+install -m 0644 packaging/conf/percona-telemetry-agent.service %{buildroot}/%{_unitdir}/percona-telemetry-agent.service
 
 %pre -n percona-telemetry-agent
 if [ ! -d /run/percona-telemetry-agent ]; then
