@@ -13,15 +13,20 @@ export DH_VERBOSE=1
 TMP=$(CURDIR)/debian/tmp/
 
 # Generate VERSION file from .obsinfo if it doesn't exist (OBS builds)
-$(shell if [ ! -f VERSION ] && ls *.obsinfo >/dev/null 2>&1; then \
-    _commit=$$(grep '^commit:' *.obsinfo | awk '{print $$2}'); \
-    _version=$$(grep '^version:' *.obsinfo | awk '{print $$2}'); \
-    echo "VERSION=$${_version}" > VERSION; \
-    echo "REVISION=$$(echo $${_commit} | cut -c1-7)" >> VERSION; \
-    echo "GITCOMMIT=$${_commit}" >> VERSION; \
-    echo "GITBRANCH=obs" >> VERSION; \
-    echo "COMPONENT_VERSION=$${_version}" >> VERSION; \
-    echo "TELEMETRY_AGENT_RELEASE_FULLCOMMIT=$${_commit}" >> VERSION; \
+# In OBS, the .obsinfo is in /usr/src/packages/SOURCES/, not the source tree
+OBS_SOURCES_DIR = /usr/src/packages/SOURCES
+$(shell if [ ! -f VERSION ]; then \
+    _obsinfo=$$(ls $(OBS_SOURCES_DIR)/*.obsinfo 2>/dev/null | head -1); \
+    if [ -n "$${_obsinfo}" ]; then \
+        _commit=$$(grep '^commit:' $${_obsinfo} | awk '{print $$2}'); \
+        _version=$$(grep '^version:' $${_obsinfo} | awk '{print $$2}'); \
+        echo "VERSION=$${_version}" > VERSION; \
+        echo "REVISION=$$(echo $${_commit} | cut -c1-7)" >> VERSION; \
+        echo "GITCOMMIT=$${_commit}" >> VERSION; \
+        echo "GITBRANCH=obs" >> VERSION; \
+        echo "COMPONENT_VERSION=$${_version}" >> VERSION; \
+        echo "TELEMETRY_AGENT_RELEASE_FULLCOMMIT=$${_commit}" >> VERSION; \
+    fi; \
 fi)
 
 export VERSION=$(shell egrep '^VERSION' VERSION | cut -f 2 -d '=')

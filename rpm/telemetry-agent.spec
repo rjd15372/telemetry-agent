@@ -60,7 +60,7 @@ export GOARCH=amd64
 mkdir -p src/github.com/percona/
 mv percona-telemetry-agent-%{version} src/github.com/percona/percona-telemetry-agent
 ln -s src/github.com/percona/percona-telemetry-agent percona-telemetry-agent-%{version}
-cd src/github.com/percona/percona-telemetry-agent && env GOARCH=${GOARCH} make build
+cd src/github.com/percona/percona-telemetry-agent && env GOARCH=${GOARCH} make build COMPONENT_VERSION=${COMPONENT_VERSION} TELEMETRY_AGENT_RELEASE_FULLCOMMIT=${TELEMETRY_AGENT_RELEASE_FULLCOMMIT}
 cd %{_builddir}
 
 %install
