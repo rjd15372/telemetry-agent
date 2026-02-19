@@ -2,7 +2,6 @@ Source: percona-telemetry-agent
 Section: utils
 Priority: optional
 Maintainer: Percona LLC
-Version: 1.0.9
 Homepage: https://percona.com
 
 Package: percona-telemetry-agent
