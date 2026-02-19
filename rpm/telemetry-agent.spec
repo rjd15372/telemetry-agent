@@ -29,6 +29,18 @@ Percona Telemetry Agent gathers information and metrics from Percona products in
 
 
 %build
+GITCOMMIT=$(grep '^commit:' %{_sourcedir}/*.obsinfo | awk '{print $2}')
+REVISION=$(echo $GITCOMMIT | cut -c1-7)
+
+cat > VERSION <<EOF
+VERSION=%{version}
+REVISION=${REVISION}
+GITCOMMIT=${GITCOMMIT}
+GITBRANCH=obs
+COMPONENT_VERSION=%{version}
+TELEMETRY_AGENT_RELEASE_FULLCOMMIT=${GITCOMMIT}
+EOF
+
 source ./VERSION
 export VERSION
 export GITBRANCH
