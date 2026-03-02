@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Percona LLC
 Homepage: https://percona.com
-Build-Depends: debhelper (>= 9), golang-go
+Build-Depends: debhelper (>= 9), golang-1.25
 
 Package: percona-telemetry-agent
 Architecture: any
