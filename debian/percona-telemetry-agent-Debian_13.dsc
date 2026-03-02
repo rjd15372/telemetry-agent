@@ -9,4 +9,3 @@ Maintainer: Percona LLC
 Build-Depends:
  debhelper (>= 9),
  golang-1.25
-
