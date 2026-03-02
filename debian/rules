@@ -46,6 +46,9 @@ override_dh_auto_test override_dh_compress override_dh_fixperms override_dh_stri
 
 override_dh_auto_build:
 	@echo "RULES.$@"
+	if [ ! -d vendor ] && [ -f $(OBS_SOURCES_DIR)/vendor.tar.gz ]; then \
+		tar -xzf $(OBS_SOURCES_DIR)/vendor.tar.gz -C $(CURDIR); \
+	fi
 ifeq ($(DEB_BUILD_ARCH),arm64)
 	make build GOARCH=arm64 COMPONENT_VERSION=${COMPONENT_VERSION} TELEMETRY_AGENT_RELEASE_FULLCOMMIT=${TELEMETRY_AGENT_RELEASE_FULLCOMMIT} VENDOR_BUILD_FLAGS="-mod=vendor"
 else
