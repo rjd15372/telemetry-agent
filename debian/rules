@@ -34,7 +34,7 @@ export GITBRANCH=$(shell egrep '^GITBRANCH' VERSION | cut -f 2 -d '=')
 export GITCOMMIT=$(shell egrep '^GITCOMMIT' VERSION | cut -f 2 -d '=')
 export COMPONENT_VERSION=$(shell egrep '^COMPONENT_VERSION' VERSION | cut -f 2 -d '=')
 export TELEMETRY_AGENT_RELEASE_FULLCOMMIT=$(shell egrep '^TELEMETRY_AGENT_RELEASE_FULLCOMMIT' VERSION | cut -f 2 -d '=')
-
+export GOTOOLCHAIN=local
 
 %:
 	dh $@ --with-systemd

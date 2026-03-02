@@ -7,5 +7,6 @@ Debtransform-Release: 1
 Debtransform-Files-Tar: vendor.tar.gz
 Maintainer: Percona LLC
 Build-Depends:
- debhelper (>= 9)
+ debhelper (>= 9),
+ golang-go
 
