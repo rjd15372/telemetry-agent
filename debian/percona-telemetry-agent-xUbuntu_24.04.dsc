@@ -8,4 +8,4 @@ Debtransform-Files-Tar: vendor.tar.gz
 Maintainer: Percona LLC
 Build-Depends:
  debhelper (>= 9),
- golang-go
+ golang-1.25
